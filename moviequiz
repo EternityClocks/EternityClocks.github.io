@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+
+<title> Movie Quiz </title>
+
+
+
+<script type="text/javascript">
+// For:
+// http://www.webdeveloper.com/forum/showthread.php?286477
+// -How-to-make-a-javascript-quiz-to-choose-10-random-questions-from-100-questions&p=1296827#post1296827
+
+var QuesResp = [
+  ['Factions','Divergent'],     ['Girl on Fire','Hunger Games'],  ['Stomping head in elevator','Drive'],     ['Flashlight','Candle'], ['7 evil exes','Scott Pilgrim'],
+  ['Its a bird, its a plane!','Man of Steel'],  ['The Motherfucker','Kick Ass 2'],['Anal rape scene','The Girl with the Dragon Tattoo'], ['M. Night Shyamalan worst movie','The Last Airbender'],        ['Crazy Balet Dancer','Black Swan'],
+  ['Sippy Sip','This is the End'], ['Channing Tatum as a stripper','Magic Mike'],   ['Frida Pinto','Immortals'],    ['Shooting on new years eve','Fruitville Station'],         ['Crime is legal one day a year','The Purge'],
+  ['Would you like to build a snowman','Frozen'],  ['Fix it Felix','Wreck it Wralph'],        ['Dating an O.S.','Her'],          ['Alien Scarlett Johansson','Under the Skin'],  ['Porn Addict','Don Jon'],
+  ['Dream within a Dream','Inception'], ['Zombie version of Twilight','Warm Bodies'],  ['The D is silent','Django'],   ['Green light','The Great Gatspy'],['Couples Brunch','Its a disaster'] // no comma after last entry
+];
+</script>
+
+</head>
+<body>
+<div id="QuestionsResponses"></div>
+
+<script type="text/javascript">
+var maxQues = 5;
+var QRpointers = [];
+
+function randOrd() { return (Math.round(Math.random())-0.5); } // quick and dirty randomizer (not the best)
+
+window.onload = function() {
+  for (var i=0; i<QuesResp.length; i++) { QRpointers.push(i); }
+  QRpointers.sort(randOrd);                                    // better randomizers are available
+
+  var str = '<h1>Name that movie! (2010-2014)</h1>';
+  for (var Q=0; Q<maxQues; Q++) {
+    str += 'Question #'+(Q+1)+'<br>';
+    str += QuesResp[QRpointers[Q]][0];
+//    str += ' <input type="text" id="R'+Q+'" value="' +QuesResp[QRpointers[Q]][1]+ '"><p>';
+    str += ' <input type="text" id="R'+Q+'"><p>';
+  }
+  str += '<INPUT value="CHECK ALL" type="button" onclick="scoreme()">';
+  str += '<INPUT id="score" type="text" size="8">';
+  document.getElementById('QuestionsResponses').innerHTML = str;
+}
+function scoreme() {
+  var sum = 0;  var total=maxQues;
+  var corr, resp;
+  var sel = document.getElementById('QuestionsResponses').getElementsByTagName('input');  
+  for (var i=0; i<sel.length-1; i++) {
+    corr = QuesResp[QRpointers[i]][1];
+    resp = sel[i].value;
+    if (resp != '') {
+      if ( (corr.toLowerCase().indexOf(resp.toLowerCase()) ) != -1) { sum++; }  // for part match
+//      if (corr.toLowerCase() == resp.toLowerCase()) { sum++; }                  // for EXACT match
+//      if (corr == resp) { sum++; }                                              // for EXACT CASE match
+    }
+  }
+  document.getElementById('score').value = ((sum/maxQues)*100).toFixed(0)+'%';
+}
+</script>
+
+</body>
+</html>
